@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'services/api_service.dart';
+import 'screens/name_entry_screen.dart';
+import 'screens/payment_screen.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -54,7 +57,7 @@ class WelcomeScreen extends StatelessWidget {
           decoration: const BoxDecoration(
             image: DecorationImage(
               image: NetworkImage(
-                'https://imgs.search.brave.com/0e9cUtB2CbWMg4MBAwFE68Uhky9qreOABdDbe9_tGP4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWdz/LnNlYXJjaC5icmF2/ZS5jb20vdlJob2xG/cWNtOWtwWUg1cU5P/YVdxM1lJWTUzQTZj/TFV5RjZtczRnczNk/by9yczpmaXQ6NTAw/OjA6MDowL2c6Y2Uv/YUhSMGNITTZMeTlw/TG5CcC9ibWx0Wnk1/amIyMHZiM0pwL1oy/bHVZV3h6TDJRM0wy/RmkvTHpBNEwyUTNZ/V0l3T0dabS9ORE0w/WVdVMFpqTTRPRGMx/L05qTmxOMll5WWpn/eFpERTUvTG1wd1p3',
+                'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
               ),
               fit: BoxFit.cover,
             ),
@@ -117,7 +120,7 @@ class WelcomeScreen extends StatelessWidget {
                               ),
                               const SizedBox(width: 16),
                               Text(
-                                'BORNE DE COMONDES',
+                                'BORNE DE COMMANDES',
                                 style: TextStyle(
                                   fontSize: isSmallScreen ? 18 : 24,
                                   color: Colors.white,
@@ -147,83 +150,79 @@ class WelcomeScreen extends StatelessWidget {
                 // Bottom section
                 Expanded(
                   flex: 2,
-                  child: Container(
-                    //  color: Colors.white.withOpacity(0.95),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Logo
-                        Container(
-                          width: isSmallScreen ? 60 : 80,
-                          height: isSmallScreen ? 60 : 80,
-                          decoration: const BoxDecoration(
-                            color: Colors.black,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Center(
-                            child: Text(
-                              'ℝ',
-                              style: TextStyle(
-                                fontSize: isSmallScreen ? 30 : 40,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Logo
+                      Container(
+                        width: isSmallScreen ? 60 : 80,
+                        height: isSmallScreen ? 60 : 80,
+                        decoration: const BoxDecoration(
+                          color: Colors.black,
+                          shape: BoxShape.circle,
                         ),
-                        SizedBox(height: isSmallScreen ? 20 : 30),
-
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: isSmallScreen ? 16 : 0,
-                          ),
-                          child: const Text(
-                            'APPUYER SUR L\'ÉCRAN POUR COMMANDER',
+                        child: Center(
+                          child: Text(
+                            'ℝ',
                             style: TextStyle(
-                              fontSize: 18,
-                              color: Color.fromARGB(221, 243, 238, 238),
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1,
+                              fontSize: isSmallScreen ? 30 : 40,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
                             ),
-                            textAlign: TextAlign.center,
                           ),
                         ),
-                        const SizedBox(height: 20),
+                      ),
+                      SizedBox(height: isSmallScreen ? 20 : 30),
 
-                        // Language selector
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            // border: Border.all(color: Colors.grey.shade300),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(2),
-                                child: Image.network(
-                                  'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/1200px-Flag_of_France.svg.png',
-                                  width: 20,
-                                  height: 14,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              const Text(
-                                'Français',
-                                style: TextStyle(
-                                  color: Color.fromARGB(221, 243, 241, 241),
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: isSmallScreen ? 16 : 0,
                         ),
-                      ],
-                    ),
+                        child: const Text(
+                          'APPUYER SUR L\'ÉCRAN POUR COMMANDER',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Color.fromARGB(221, 243, 238, 238),
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Language selector
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(2),
+                              child: Image.network(
+                                'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/1200px-Flag_of_France.svg.png',
+                                width: 20,
+                                height: 14,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Français',
+                              style: TextStyle(
+                                color: Color.fromARGB(221, 243, 241, 241),
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -249,7 +248,7 @@ class DiningOptionScreen extends StatelessWidget {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(
-              'https://imgs.search.brave.com/0e9cUtB2CbWMg4MBAwFE68Uhky9qreOABdDbe9_tGP4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWdz/LnNlYXJjaC5icmF2/ZS5jb20vdlJob2xG/cWNtOWtwWUg1cU5P/YVdxM1lJWTUzQTZj/TFV5RjZtczRnczNk/by9yczpmaXQ6NTAw/OjA6MDowL2c6Y2Uv/YUhSMGNITTZMeTlw/TG5CcC9ibWx0Wnk1/amIyMHZiM0pwL1oy/bHVZV3h6TDJRM0wy/RmkvTHpBNEwyUTNZ/V0l3T0dabS9ORE0w/WVdVMFpqTTRPRGMx/L05qTmxOMll5WWpn/eFpERTUvTG1wd1p3',
+              'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
             ),
             fit: BoxFit.cover,
           ),
@@ -492,14 +491,6 @@ class DiningOptionScreen extends StatelessWidget {
   }
 }
 
-
-
-
-
-
-
-
-
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -526,7 +517,7 @@ class _HomePageState extends State<HomePage> {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(
-              'https://imgs.search.brave.com/0e9cUtB2CbWMg4MBAwFE68Uhky9qreOABdDbe9_tGP4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWdz/LnNlYXJjaC5icmF2/ZS5jb20vdlJob2xG/cWNtOWtwWUg1cU5P/YVdxM1lJWTUzQTZj/TFV5RjZtczRnczNk/by9yczpmaXQ6NTAw/OjA6MDowL2c6Y2Uv/YUhSMGNITTZMeTlw/TG5CcC9ibWx0Wnk1/amIyMHZiM0pwL1oy/bHVZV3h6TDJRM0wy/RmkvTHpBNEwyUTNZ/V0l3T0dabS9ORE0w/WVdVMFpqTTRPRGMx/L05qTmxOMll5WWpn/eFpERTUvTG1wd1p3',
+              'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
             ),
             fit: BoxFit.cover,
           ),
@@ -546,10 +537,20 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Container(
                     width: 50,
-                    height: isSmallScreen ? 100 : 150,
+                    height: 50,
                     decoration: const BoxDecoration(
                       color: Colors.black,
                       shape: BoxShape.circle,
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'ℝ',
+                        style: TextStyle(
+                          fontSize: 24,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -557,16 +558,6 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          child: Text(
-                            'ℝ',
-                            style: TextStyle(
-                              fontSize: 24,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -576,7 +567,6 @@ class _HomePageState extends State<HomePage> {
                               color: Colors.white,
                             ),
                             const SizedBox(width: 8),
-
                             Flexible(
                               child: Text(
                                 'BORNE DE DÉMONSTRATION',
@@ -661,7 +651,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'NOTRE CART',
+                        'NOTRE CARTE',
                         style: TextStyle(
                           color: _selectedIndex == 0
                               ? Colors.white
@@ -720,7 +710,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                       Text(
-                        'CART',
+                        'PANIER',
                         style: TextStyle(
                           color: _selectedIndex == 1
                               ? Colors.white
@@ -749,57 +739,65 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  final List<Category> categories = [
-    Category(
-      id: '1',
-      name: 'PIZZAS',
-      icon: Icons.local_pizza,
-      imageUrl:
-          'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000',
-    ),
-    Category(
-      id: '2',
-      name: 'SANDWICHES',
-      icon: Icons.lunch_dining,
-      imageUrl:
-          'https://images.unsplash.com/photo-1550507992-eb63ffee0847?q=80&w=1000',
-    ),
-    Category(
-      id: '3',
-      name: 'PLATS',
-      icon: Icons.dinner_dining,
-      imageUrl:
-          'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1000',
-    ),
-    Category(
-      id: '4',
-      name: 'MENUS',
-      icon: Icons.restaurant_menu,
-      imageUrl:
-          'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?q=80&w=1000',
-    ),
-    Category(
-      id: '5',
-      name: 'DESSERTS',
-      icon: Icons.icecream,
-      imageUrl:
-          'https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=1000',
-    ),
-    Category(
-      id: '6',
-      name: 'BOISSONS',
-      icon: Icons.local_drink,
-      imageUrl:
-          'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=1000',
-    ),
-  ];
+  List<Category> categories = [];
+  bool isLoading = true;
+  String selectedCategoryId = '';
 
-  String selectedCategoryId = '1';
+  @override
+  void initState() {
+    super.initState();
+    _loadCategories();
+  }
+
+  Future<void> _loadCategories() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final fetchedCategories = await ApiService.getCategories();
+      setState(() {
+        categories = fetchedCategories.where((cat) => cat.visible).toList();
+        if (categories.isNotEmpty) {
+          selectedCategoryId = categories.first.id.toString();
+        }
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur lors du chargement des catégories: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     final bool isSmallScreen = screenSize.width < 600;
+
+    if (isLoading) {
+      return Container(
+        color: Colors.white.withOpacity(0.95),
+        child: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    if (categories.isEmpty) {
+      return Container(
+        color: Colors.white.withOpacity(0.95),
+        child: const Center(
+          child: Text(
+            'Aucune catégorie disponible',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
+    }
 
     if (isSmallScreen) {
       return Column(
@@ -813,11 +811,11 @@ class _MenuScreenState extends State<MenuScreen> {
               itemCount: categories.length,
               itemBuilder: (context, index) {
                 final category = categories[index];
-                final isSelected = selectedCategoryId == category.id;
+                final isSelected = selectedCategoryId == category.id.toString();
                 return GestureDetector(
                   onTap: () {
                     setState(() {
-                      selectedCategoryId = category.id;
+                      selectedCategoryId = category.id.toString();
                     });
                   },
                   child: Container(
@@ -865,7 +863,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     image: DecorationImage(
                       image: NetworkImage(
                         categories
-                            .firstWhere((c) => c.id == selectedCategoryId)
+                            .firstWhere((c) => c.id.toString() == selectedCategoryId)
                             .imageUrl,
                       ),
                       fit: BoxFit.cover,
@@ -879,16 +877,18 @@ class _MenuScreenState extends State<MenuScreen> {
                     children: [
                       Text(
                         categories
-                            .firstWhere((c) => c.id == selectedCategoryId)
+                            .firstWhere((c) => c.id.toString() == selectedCategoryId)
                             .name,
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Text(
-                        'Burger, Hot-dogs et Tacos Mexicains',
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                      Text(
+                        categories
+                            .firstWhere((c) => c.id.toString() == selectedCategoryId)
+                            .description,
+                        style: const TextStyle(fontSize: 12, color: Colors.grey),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],
@@ -933,12 +933,12 @@ class _MenuScreenState extends State<MenuScreen> {
               Container(
                 height: 92.4,
                 padding: const EdgeInsets.all(16),
-                child: Row(
+                child: const Row(
                   children: [
-                    const Icon(Icons.menu_book, size: 24, color: Colors.grey),
-                    const SizedBox(width: 10),
-                    const Text(
-                      'Notre Cart',
+                    Icon(Icons.menu_book, size: 24, color: Colors.grey),
+                    SizedBox(width: 10),
+                    Text(
+                      'Notre Carte',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -952,11 +952,11 @@ class _MenuScreenState extends State<MenuScreen> {
                   itemCount: categories.length,
                   itemBuilder: (context, index) {
                     final category = categories[index];
-                    final isSelected = selectedCategoryId == category.id;
+                    final isSelected = selectedCategoryId == category.id.toString();
                     return GestureDetector(
                       onTap: () {
                         setState(() {
-                          selectedCategoryId = category.id;
+                          selectedCategoryId = category.id.toString();
                         });
                       },
                       child: Container(
@@ -964,9 +964,9 @@ class _MenuScreenState extends State<MenuScreen> {
                         margin: const EdgeInsets.only(bottom: 2),
                         decoration: BoxDecoration(
                           border: isSelected
-                              ? Border(
+                              ? const Border(
                                   left: BorderSide(
-                                    color: const Color(0xFFFF6B35),
+                                    color: Color(0xFFFF6B35),
                                     width: 4,
                                   ),
                                 )
@@ -1033,7 +1033,7 @@ class _MenuScreenState extends State<MenuScreen> {
                           image: DecorationImage(
                             image: NetworkImage(
                               categories
-                                  .firstWhere((c) => c.id == selectedCategoryId)
+                                  .firstWhere((c) => c.id.toString() == selectedCategoryId)
                                   .imageUrl,
                             ),
                             fit: BoxFit.cover,
@@ -1046,37 +1046,35 @@ class _MenuScreenState extends State<MenuScreen> {
                         children: [
                           Text(
                             categories
-                                .firstWhere((c) => c.id == selectedCategoryId)
+                                .firstWhere((c) => c.id.toString() == selectedCategoryId)
                                 .name,
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          
+                          Text(
+                            categories
+                                .firstWhere((c) => c.id.toString() == selectedCategoryId)
+                                .description,
+                            style: const TextStyle(fontSize: 14, color: Colors.grey),
+                          ),
                         ],
-                      
                       ),
                     ],
                   ),
                 ),
-            
-          
-
 
                 // Menu items grid
-               
-                 
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: MenuItemsGrid(
-                        categoryId: selectedCategoryId,
-                        isSmallScreen: isSmallScreen,
-                      ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: MenuItemsGrid(
+                      categoryId: selectedCategoryId,
+                      isSmallScreen: isSmallScreen,
                     ),
-                  )
-                
+                  ),
+                )
               ],
             ),
           ),
@@ -1086,21 +1084,7 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 }
 
-class Category {
-  final String id;
-  final String name;
-  final IconData icon;
-  final String imageUrl;
-
-  Category({
-    required this.id,
-    required this.name,
-    required this.icon,
-    required this.imageUrl,
-  });
-}
-
-class MenuItemsGrid extends StatelessWidget {
+class MenuItemsGrid extends StatefulWidget {
   final String categoryId;
   final bool isSmallScreen;
 
@@ -1111,16 +1095,71 @@ class MenuItemsGrid extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<MenuItemsGrid> createState() => _MenuItemsGridState();
+}
+
+class _MenuItemsGridState extends State<MenuItemsGrid> {
+  List<MenuItem> items = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProducts();
+  }
+
+  @override
+  void didUpdateWidget(MenuItemsGrid oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.categoryId != widget.categoryId) {
+      _loadProducts();
+    }
+  }
+
+  Future<void> _loadProducts() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final fetchedItems = await ApiService.getProductsByCategory(int.parse(widget.categoryId));
+      setState(() {
+        items = fetchedItems;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur lors du chargement des produits: $e')),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final List<MenuItem> items = getMenuItemsByCategory(categoryId);
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (items.isEmpty) {
+      return const Center(
+        child: Text(
+          'Aucun produit disponible dans cette catégorie',
+          style: TextStyle(fontSize: 16, color: Colors.grey),
+        ),
+      );
+    }
+
     final Size screenSize = MediaQuery.of(context).size;
 
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: _getCrossAxisCount(screenSize.width),
         childAspectRatio: _getAspectRatio(screenSize.width),
-        crossAxisSpacing: isSmallScreen ? 12 : 20,
-        mainAxisSpacing: isSmallScreen ? 12 : 20,
+        crossAxisSpacing: widget.isSmallScreen ? 12 : 20,
+        mainAxisSpacing: widget.isSmallScreen ? 12 : 20,
       ),
       itemCount: items.length,
       itemBuilder: (context, index) {
@@ -1138,127 +1177,10 @@ class MenuItemsGrid extends StatelessWidget {
   }
 
   double _getAspectRatio(double width) {
-    if (width < 400) return 1.2; // Taller cards for mobile
+    if (width < 400) return 1.2;
     if (width < 600) return 0.85;
-    return 0.8; // Slightly taller for better proportions
+    return 0.8;
   }
-
-  List<MenuItem> getMenuItemsByCategory(String categoryId) {
-    switch (categoryId) {
-      case '2':
-        return [
-          MenuItem(
-            id: '1',
-            name: 'HOT-DOG',
-            description: 'Saucisse de Francfort, pain brioché',
-            price: 7.00,
-            imageUrl:
-                'https://images.unsplash.com/photo-1612392062631-94dd858cba88?q=80&w=1000',
-          ),
-          MenuItem(
-            id: '2',
-            name: 'Burger Classique',
-            description: 'Steak haché, salade, tomate',
-            price: 6.00,
-            imageUrl:
-                'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000',
-          ),
-          MenuItem(
-            id: '3',
-            name: 'Burger 300 gr',
-            description: 'Double steak haché 150g',
-            price: 8.00,
-            imageUrl:
-                'https://images.unsplash.com/photo-1553979459-d2229ba7433b?q=80&w=1000',
-          ),
-          MenuItem(
-            id: '4',
-            name: 'Double Cheese Burger',
-            description: 'Double steak, double fromage',
-            price: 8.00,
-            imageUrl:
-                'https://images.unsplash.com/photo-1607013251379-e6eecfffe234?q=80&w=1000',
-          ),
-          MenuItem(
-            id: '5',
-            name: 'Tacos Shawarma Grillé',
-            description: 'Viande shawarma, légumes grillés',
-            price: 7.50,
-            imageUrl:
-                'https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?q=80&w=1000',
-          ),
-          MenuItem(
-            id: '6',
-            name: 'Tacos Simple',
-            description: 'Viande au choix, légumes',
-            price: 5.00,
-            imageUrl:
-                'https://images.unsplash.com/photo-1613514785940-daed07799d9b?q=80&w=1000',
-          ),
-          MenuItem(
-            id: '7',
-            name: 'Tacos Double',
-            description: 'Double viande, légumes, fromage',
-            price: 9.00,
-            imageUrl:
-                'https://images.unsplash.com/photo-1551504734-5ee1c4a3479c?q=80&w=1000',
-          ),
-        ];
-      case '1':
-        return [
-          MenuItem(
-            id: '8',
-            name: 'Margherita',
-            description: 'Tomate, mozzarella, basilic',
-            price: 9.00,
-            imageUrl:
-                'https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?q=80&w=1000',
-          ),
-          MenuItem(
-            id: '9',
-            name: 'Pepperoni',
-            description: 'Tomate, mozzarella, pepperoni',
-            price: 11.00,
-            imageUrl:
-                'https://images.unsplash.com/photo-1628840042765-356cda07504e?q=80&w=1000',
-          ),
-          MenuItem(
-            id: '10',
-            name: 'Quatre Fromages',
-            description: 'Mozzarella, gorgonzola, parmesan',
-            price: 12.00,
-            imageUrl:
-                'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000',
-          ),
-          MenuItem(
-            id: '11',
-            name: 'Végétarienne',
-            description: 'Tomate, mozzarella, légumes grillés',
-            price: 10.00,
-            imageUrl:
-                'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1000',
-          ),
-        ];
-      default:
-        return [];
-    }
-  }
-}
-
-class MenuItem {
-  final String id;
-  final String name;
-  final String description;
-  final double price;
-  final String imageUrl;
-
-  MenuItem({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.price,
-    required this.imageUrl,
-  });
 }
 
 class MenuItemCard extends StatefulWidget {
@@ -1269,6 +1191,7 @@ class MenuItemCard extends StatefulWidget {
   @override
   State<MenuItemCard> createState() => _MenuItemCardState();
 }
+
 class _MenuItemCardState extends State<MenuItemCard> {
   @override
   Widget build(BuildContext context) {
@@ -1284,13 +1207,13 @@ class _MenuItemCardState extends State<MenuItemCard> {
     return Card(
       elevation: 6,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: IntrinsicHeight( // Added to prevent overflow
+      child: IntrinsicHeight(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Image section
             Expanded(
-              flex: isVerySmall ? 6 : 5, // More space for image on very small screens
+              flex: isVerySmall ? 6 : 5,
               child: Stack(
                 children: [
                   ClipRRect(
@@ -1317,23 +1240,6 @@ class _MenuItemCardState extends State<MenuItemCard> {
                             ),
                           );
                         },
-                      ),
-                    ),
-                  ),
-
-                  // Gradient overlay for better text readability
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(16),
-                      ),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Colors.black.withOpacity(0.1),
-                        ],
                       ),
                     ),
                   ),
@@ -1375,42 +1281,42 @@ class _MenuItemCardState extends State<MenuItemCard> {
               ),
             ),
 
-            // Content section with flexible height
-            Flexible( // Changed from Expanded to Flexible
-              flex: isVerySmall ? 4 : 3, // Less space for content on very small screens
+            // Content section
+            Flexible(
+              flex: isVerySmall ? 4 : 3,
               child: Container(
                 constraints: BoxConstraints(
-                  minHeight: isVerySmall ? 60 : 80, // Minimum height to prevent too small content
+                  minHeight: isVerySmall ? 60 : 80,
                 ),
-                padding: EdgeInsets.all(isVerySmall ? 6 : (isSmallScreen ? 8 : 10)), // Reduced padding
+                padding: EdgeInsets.all(isVerySmall ? 6 : (isSmallScreen ? 8 : 10)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Changed to spaceEvenly for better distribution
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // Item name
-                    Flexible( // Made flexible to prevent overflow
+                    Flexible(
                       child: Text(
                         widget.item.name,
                         style: TextStyle(
-                          fontSize: isVerySmall ? 9 : (isSmallScreen ? 10 : 11), // Even smaller
+                          fontSize: isVerySmall ? 9 : (isSmallScreen ? 10 : 11),
                           fontWeight: FontWeight.bold,
                           color: Colors.black87,
-                          height: 1.1, // Reduced line height
+                          height: 1.1,
                         ),
-                        maxLines: 1, // Always single line for consistency
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     
                     // Description
-                    Flexible( // Made flexible to prevent overflow
+                    Flexible(
                       child: Text(
                         widget.item.description,
                         style: TextStyle(
-                          fontSize: isVerySmall ? 7 : (isSmallScreen ? 8 : 9), // Even smaller
+                          fontSize: isVerySmall ? 7 : (isSmallScreen ? 8 : 9),
                           color: Colors.grey.shade600,
-                          height: 1.1, // Reduced line height
+                          height: 1.1,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -1422,11 +1328,11 @@ class _MenuItemCardState extends State<MenuItemCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Flexible( // Made price flexible too
+                        Flexible(
                           child: Text(
                             '${widget.item.price.toStringAsFixed(2)} €',
                             style: TextStyle(
-                              fontSize: isVerySmall ? 10 : (isSmallScreen ? 11 : 12), // Smaller
+                              fontSize: isVerySmall ? 10 : (isSmallScreen ? 11 : 12),
                               fontWeight: FontWeight.bold,
                               color: const Color(0xFF00BCD4),
                             ),
@@ -1436,17 +1342,17 @@ class _MenuItemCardState extends State<MenuItemCard> {
                         if (quantity > 0)
                           Container(
                             padding: EdgeInsets.symmetric(
-                              horizontal: isVerySmall ? 4 : 6, // Reduced padding
+                              horizontal: isVerySmall ? 4 : 6,
                               vertical: isVerySmall ? 1 : 2,
                             ),
                             decoration: BoxDecoration(
                               color: const Color(0xFF00BCD4).withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(8), // Smaller radius
+                              borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
                               'x$quantity',
                               style: TextStyle(
-                                fontSize: isVerySmall ? 6 : (isSmallScreen ? 7 : 8), // Very small
+                                fontSize: isVerySmall ? 6 : (isSmallScreen ? 7 : 8),
                                 fontWeight: FontWeight.bold,
                                 color: const Color(0xFF00BCD4),
                               ),
@@ -1463,57 +1369,6 @@ class _MenuItemCardState extends State<MenuItemCard> {
       ),
     );
   }
-}
-
-class CartManager {
-  static final List<CartItem> _cartItems = [];
-  static List<CartItem> get cartItems => _cartItems;
-
-  static void addToCart(MenuItem item) {
-    final existingIndex = _cartItems.indexWhere(
-      (cartItem) => cartItem.item.id == item.id,
-    );
-    if (existingIndex >= 0) {
-      _cartItems[existingIndex].quantity++;
-    } else {
-      _cartItems.add(CartItem(item: item, quantity: 1));
-    }
-  }
-
-  static void removeFromCart(String itemId) {
-    _cartItems.removeWhere((cartItem) => cartItem.item.id == itemId);
-  }
-
-  static void updateQuantity(String itemId, int quantity) {
-    final index = _cartItems.indexWhere(
-      (cartItem) => cartItem.item.id == itemId,
-    );
-    if (index >= 0) {
-      if (quantity <= 0) {
-        _cartItems.removeAt(index);
-      } else {
-        _cartItems[index].quantity = quantity;
-      }
-    }
-  }
-
-  static double get totalPrice {
-    return _cartItems.fold(
-      0,
-      (total, cartItem) => total + (cartItem.item.price * cartItem.quantity),
-    );
-  }
-
-  static void clearCart() {
-    _cartItems.clear();
-  }
-}
-
-class CartItem {
-  final MenuItem item;
-  int quantity;
-
-  CartItem({required this.item, required this.quantity});
 }
 
 class CartScreen extends StatefulWidget {
@@ -1646,7 +1501,7 @@ class _CartScreenState extends State<CartScreen> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          '+ ${cartItem.quantity}x',
+                          '${cartItem.quantity}x',
                           style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -1741,7 +1596,7 @@ class _CartScreenState extends State<CartScreen> {
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: const Color(0xFF00BCD4),
+                        color: Color(0xFF00BCD4),
                       ),
                     ),
                   ],
@@ -1792,6 +1647,8 @@ class _CartScreenState extends State<CartScreen> {
   }
 }
 
+// Add the NameEntryScreen and PaymentScreen classes at the end of the file
+
 class NameEntryScreen extends StatefulWidget {
   const NameEntryScreen({Key? key}) : super(key: key);
 
@@ -1826,7 +1683,7 @@ class _NameEntryScreenState extends State<NameEntryScreen> {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(
-              'https://imgs.search.brave.com/0e9cUtB2CbWMg4MBAwFE68Uhky9qreOABdDbe9_tGP4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWdz/LnNlYXJjaC5icmF2/ZS5jb20vdlJob2xG/cWNtOWtwWUg1cU5P/YVdxM1lJWTUzQTZj/TFV5RjZtczRnczNk/by9yczpmaXQ6NTAw/OjA6MDowL2c6Y2Uv/YUhSMGNITTZMeTlw/TG5CcC9ibWx0Wnk1/amIyMHZiM0pwL1oy/bHVZV3h6TDJRM0wy/RmkvTHpBNEwyUTNZ/V0l3T0dabS9ORE0w/WVdVMFpqTTRPRGMx/L05qTmxOMll5WWpn/eFpERTUvTG1wd1p3',
+              'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
             ),
             fit: BoxFit.cover,
           ),
@@ -2197,6 +2054,49 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   String selectedPaymentMethod = 'card';
+  bool isProcessingOrder = false;
+
+  Future<void> _processOrder() async {
+    setState(() {
+      isProcessingOrder = true;
+    });
+
+    try {
+      // Create ticket
+      final ticketId = await ApiService.createTicket();
+      if (ticketId == null) {
+        throw Exception('Failed to create ticket');
+      }
+
+      // Add all cart items to the ticket
+      bool allItemsAdded = true;
+      for (final cartItem in CartManager.cartItems) {
+        final success = await ApiService.addProductToTicket(
+          ticketId,
+          cartItem.item.id,
+          cartItem.quantity,
+        );
+        if (!success) {
+          allItemsAdded = false;
+          break;
+        }
+      }
+
+      if (!allItemsAdded) {
+        throw Exception('Failed to add some items to ticket');
+      }
+
+      // Show success dialog
+      _showOrderConfirmation(context, ticketId);
+    } catch (e) {
+      setState(() {
+        isProcessingOrder = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur lors de la commande: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -2208,7 +2108,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(
-              'https://imgs.search.brave.com/0e9cUtB2CbWMg4MBAwFE68Uhky9qreOABdDbe9_tGP4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWdz/LnNlYXJjaC5icmF2/ZS5jb20vdlJob2xG/cWNtOWtwWUg1cU5P/YVdxM1lJWTUzQTZj/TFV5RjZtczRnczNk/by9yczpmaXQ6NTAw/OjA6MDowL2c6Y2Uv/YUhSMGNITTZMeTlw/TG5CcC9ibWx0Wnk1/amIyMHZiM0pwL1oy/bHVZV3h6TDJRM0wy/RmkvTHpBNEwyUTNZ/V0l3T0dabS9ORE0w/WVdVMFpqTTRPRGMx/L05qTmxOMll5WWpn/eFpERTUvTG1wd1p3',
+              'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
             ),
             fit: BoxFit.cover,
           ),
@@ -2394,9 +2294,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {
-                            _showOrderConfirmation(context);
-                          },
+                          onPressed: isProcessingOrder ? null : _processOrder,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF00BCD4),
                             padding: const EdgeInsets.symmetric(vertical: 20),
@@ -2404,14 +2302,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                          child: Text(
-                            'PAYER ${CartManager.totalPrice.toStringAsFixed(2)} €',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: isProcessingOrder
+                              ? const CircularProgressIndicator(color: Colors.white)
+                              : Text(
+                                  'PAYER ${CartManager.totalPrice.toStringAsFixed(2)} €',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                         ),
                       ),
                     ],
@@ -2479,7 +2379,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     );
   }
 
-  void _showOrderConfirmation(BuildContext context) {
+  void _showOrderConfirmation(BuildContext context, int ticketId) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -2521,9 +2421,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'Votre commande sera prête dans 15-20 minutes.',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                Text(
+                  'Votre commande #$ticketId sera prête dans 15-20 minutes.',
+                  style: const TextStyle(fontSize: 16, color: Colors.grey),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 30),
@@ -2548,7 +2448,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       ),
                     ),
                     child: const Text(
-                      'BACK TO HOME PAGE',
+                      'RETOUR À L\'ACCUEIL',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
