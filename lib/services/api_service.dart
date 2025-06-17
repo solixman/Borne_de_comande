@@ -1,28 +1,79 @@
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+
+// Response classes for structured API responses
+class CategoriesResponse {
+  final List<dynamic> categories;
+
+  CategoriesResponse({required this.categories});
+
+  factory CategoriesResponse.fromJson(Map<String, dynamic> json) {
+    return CategoriesResponse(categories: json['categories']);
+  }
+}
+
+class ProductsResponse {
+  final List<dynamic> produits;
+
+  ProductsResponse({required this.produits});
+
+  factory ProductsResponse.fromJson(Map<String, dynamic> json) {
+    return ProductsResponse(produits: json['produits']);
+  }
+}
 
 class ApiService {
-  static const String baseUrl = 'http://127.0.0.1:8000/api';
-  static const String authToken = 'your_auth_token_here'; // Replace with actual token
+  // Better URL handling for different platforms
+  static final String baseUrl = () {
+    if (kIsWeb) {
+      return 'http://localhost:8000/api';
+    } else if (Platform.isAndroid) {
+      return 'http://10.0.2.2:8000/api';
+    } else {
+      return 'http://127.0.0.1:8000/api';
+    }
+  }();
+
+  // You can set this token if needed, or remove auth if not required
+  static const String authToken = 'your_auth_token_here'; // Replace with actual token or remove
   
   static Map<String, String> get headers => {
-    'Authorization': 'Bearer $authToken',
-    'Accept': 'application/json',
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    if (authToken.isNotEmpty && authToken != 'your_auth_token_here')
+      'Authorization': 'Bearer $authToken',
   };
 
   static Future<List<Category>> getCategories() async {
     try {
+      print('Fetching categories from: $baseUrl/categories');
       final response = await http.get(
         Uri.parse('$baseUrl/categories'),
         headers: headers,
       );
 
+      print('Categories response status: ${response.statusCode}');
+      print('Categories response body: ${response.body}');
+
       if (response.statusCode == 200) {
-        final List<dynamic> categoriesJson = json.decode(response.body);
+        final responseData = jsonDecode(response.body);
+
+        // Handle both direct list and wrapped response
+        List<dynamic> categoriesJson;
+        if (responseData is List) {
+          categoriesJson = responseData;
+        } else {
+          final categoriesResponse = CategoriesResponse.fromJson(responseData);
+          categoriesJson = categoriesResponse.categories;
+        }
+
+        print('Found ${categoriesJson.length} categories');
         return categoriesJson.map((json) => Category.fromJson(json)).toList();
       } else {
-        throw Exception('Failed to load categories: ${response.statusCode}');
+        final responseData = jsonDecode(response.body);
+        throw Exception(responseData['message'] ?? 'Failed to fetch categories');
       }
     } catch (e) {
       print('Error fetching categories: $e');
@@ -32,18 +83,34 @@ class ApiService {
 
   static Future<List<MenuItem>> getProductsByCategory(int categoryId) async {
     try {
+      final url = '$baseUrl/produits/categorie/$categoryId';
+      print('Fetching products from: $url');
+      
       final response = await http.get(
-        Uri.parse('$baseUrl/produits/categorie/$categoryId'),
+        Uri.parse(url),
         headers: headers,
       );
 
+      print('Products response status: ${response.statusCode}');
+      print('Products response body: ${response.body}');
+
       if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        final List<dynamic> produitsJson = data['produits'] ?? [];
+        final responseData = jsonDecode(response.body);
+
+        // Handle both direct list and wrapped response
+        List<dynamic> produitsJson;
+        if (responseData is List) {
+          produitsJson = responseData;
+        } else {
+          final productsResponse = ProductsResponse.fromJson(responseData);
+          produitsJson = productsResponse.produits;
+        }
         
+        print('Found ${produitsJson.length} products for category $categoryId');
         return produitsJson.map((json) => MenuItem.fromJson(json)).toList();
       } else {
-        throw Exception('Failed to load products: ${response.statusCode}');
+        final responseData = jsonDecode(response.body);
+        throw Exception(responseData['message'] ?? 'Failed to fetch products');
       }
     } catch (e) {
       print('Error fetching products: $e');
@@ -53,16 +120,23 @@ class ApiService {
 
   static Future<int?> createTicket() async {
     try {
+      print('Creating new ticket at: $baseUrl/document');
       final response = await http.post(
         Uri.parse('$baseUrl/document'),
         headers: headers,
       );
 
+      print('Create ticket response status: ${response.statusCode}');
+      print('Create ticket response body: ${response.body}');
+
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final data = json.decode(response.body);
-        return data['ticket_id'] ?? data['id_document'];
+        final responseData = jsonDecode(response.body);
+        final ticketId = responseData['ticket_id'] ?? responseData['id'];
+        print('Created ticket with ID: $ticketId');
+        return ticketId;
       } else {
-        throw Exception('Failed to create ticket: ${response.statusCode}');
+        final responseData = jsonDecode(response.body);
+        throw Exception(responseData['message'] ?? 'Failed to create ticket');
       }
     } catch (e) {
       print('Error creating ticket: $e');
@@ -72,18 +146,33 @@ class ApiService {
 
   static Future<bool> addProductToTicket(int ticketId, int productId, int quantity) async {
     try {
+      final url = '$baseUrl/document/$ticketId/lines';
+      print('Adding product to ticket at: $url');
+      print('Product ID: $productId, Quantity: $quantity');
+      
       final response = await http.post(
-        Uri.parse('$baseUrl/document/$ticketId/lines'),
+        Uri.parse(url),
         headers: headers,
-        body: json.encode({
-          'id_produit': productId,
-          'qte': quantity,
+        body: jsonEncode({
+          'produit_id': productId,
+          'quantity': quantity,
         }),
       );
 
-      return response.statusCode == 200 || response.statusCode == 201;
+      print('Add product response status: ${response.statusCode}');
+      print('Add product response body: ${response.body}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final responseData = jsonDecode(response.body);
+        print('✅ ${responseData['message'] ?? 'Product added successfully'}');
+        return true;
+      } else {
+        final responseData = jsonDecode(response.body);
+        print('❌ Server error: ${responseData['message']}');
+        return false;
+      }
     } catch (e) {
-      print('Error adding product to ticket: $e');
+      print('❌ Connection error: $e');
       return false;
     }
   }
@@ -105,12 +194,13 @@ class Category {
   });
 
   factory Category.fromJson(Map<String, dynamic> json) {
+    print('Parsing category JSON: $json');
     return Category(
-      id: json['id_categorie'],
-      name: json['nom'],
+      id: json['id_categorie'] ?? json['id'] ?? 0,
+      name: json['nom'] ?? json['name'] ?? 'Unknown Category',
       description: json['description'] ?? '',
-      imageUrl: json['image'] ?? _getDefaultImageForCategory(json['id_categorie']),
-      visible: json['visible'] == 1,
+      imageUrl: json['image'] ?? json['image_url'] ?? _getDefaultImageForCategory(json['id_categorie'] ?? json['id'] ?? 0),
+      visible: (json['visible'] ?? json['is_visible'] ?? 1) == 1,
     );
   }
 
@@ -147,12 +237,13 @@ class MenuItem {
   });
 
   factory MenuItem.fromJson(Map<String, dynamic> json) {
+    print('Parsing product JSON: $json');
     return MenuItem(
-      id: json['id_produit'],
-      name: json['nom'],
+      id: json['id_produit'] ?? json['idProduit'] ?? json['id'] ?? 0,
+      name: json['nom'] ?? json['name'] ?? 'Unknown Product',
       description: json['description'] ?? 'Délicieux produit',
-      price: (json['prix'] ?? 0).toDouble(),
-      imageUrl: json['image'] ?? _getImageForProduct(json['id_produit'] ?? 1),
+      price: double.tryParse(json['prix']?.toString() ?? json['price']?.toString() ?? '0') ?? 0.0,
+      imageUrl: json['image'] ?? json['image_url'] ?? _getImageForProduct(json['id_produit'] ?? json['idProduit'] ?? json['id'] ?? 1),
     );
   }
 
