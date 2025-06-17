@@ -53,14 +53,11 @@ class WelcomeScreen extends StatelessWidget {
         },
         child: Container(
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFF2C1810),
-                Color(0xFF8B4513),
-                Color(0xFF2C1810),
-              ],
+            image: DecorationImage(
+              image: NetworkImage(
+                'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+              ),
+              fit: BoxFit.cover,
             ),
           ),
           child: Container(
@@ -204,22 +201,12 @@ class WelcomeScreen extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Container(
-                              width: 20,
-                              height: 14,
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  'FR',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 8,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(2),
+                              child: Image.network(
+                                'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/1200px-Flag_of_France.svg.png',
+                                width: 20,
+                                height: 14,
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -257,14 +244,11 @@ class DiningOptionScreen extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF2C1810),
-              Color(0xFF8B4513),
-              Color(0xFF2C1810),
-            ],
+          image: DecorationImage(
+            image: NetworkImage(
+              'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+            ),
+            fit: BoxFit.cover,
           ),
         ),
         child: Container(
@@ -301,7 +285,7 @@ class DiningOptionScreen extends StatelessWidget {
                           const SizedBox(width: 16),
                           Flexible(
                             child: Text(
-                              'BORNE DE DÉMONSTRATION',
+                              'BORNE DE DÉMONSTRATION NOUS',
                               style: TextStyle(
                                 fontSize: isSmallScreen ? 16 : 24,
                                 color: Colors.white,
@@ -359,7 +343,7 @@ class DiningOptionScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        'OÙ VOULEZ-VOUS CONSOMMER?',
+                        'OÙ VOULEZ-VOUS CONSOMMEZ?',
                         style: TextStyle(
                           fontSize: 24,
                           color: Color.fromARGB(221, 183, 180, 180),
@@ -529,14 +513,11 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF2C1810),
-              Color(0xFF8B4513),
-              Color(0xFF2C1810),
-            ],
+          image: DecorationImage(
+            image: NetworkImage(
+              'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+            ),
+            fit: BoxFit.cover,
           ),
         ),
         child: Column(
