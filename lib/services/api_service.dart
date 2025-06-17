@@ -60,7 +60,7 @@ class ApiService {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = json.decode(response.body);
-        return data['ticket_id'];
+        return data['ticket_id'] ?? data['id_document'];
       } else {
         throw Exception('Failed to create ticket: ${response.statusCode}');
       }
@@ -76,8 +76,8 @@ class ApiService {
         Uri.parse('$baseUrl/document/$ticketId/lines'),
         headers: headers,
         body: json.encode({
-          'produit_id': productId,
-          'quantity': quantity,
+          'id_produit': productId,
+          'qte': quantity,
         }),
       );
 
@@ -115,6 +115,7 @@ class Category {
   }
 
   static String _getDefaultImageForCategory(int categoryId) {
+    // Fallback images if API doesn't provide image URLs
     switch (categoryId) {
       case 1:
         return 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=1000';
@@ -147,15 +148,16 @@ class MenuItem {
 
   factory MenuItem.fromJson(Map<String, dynamic> json) {
     return MenuItem(
-      id: json['idProduit'] ?? json['id'],
-      name: json['nom'] ?? json['name'],
+      id: json['id_produit'],
+      name: json['nom'],
       description: json['description'] ?? 'Délicieux produit',
-      price: (json['prix'] ?? json['price'] ?? 0).toDouble(),
-      imageUrl: json['image'] ?? _getImageForProduct(json['idProduit'] ?? json['id'] ?? 1),
+      price: (json['prix'] ?? 0).toDouble(),
+      imageUrl: json['image'] ?? _getImageForProduct(json['id_produit'] ?? 1),
     );
   }
 
   static String _getImageForProduct(int productId) {
+    // Fallback images if API doesn't provide image URLs
     final List<String> images = [
       'https://images.unsplash.com/photo-1612392062631-94dd858cba88?q=80&w=1000',
       'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000',

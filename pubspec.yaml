@@ -1,5 +1,5 @@
 name: restaurant_kiosk
-description: A Flutter restaurant kiosk application with API integration.
+description: A Flutter restaurant kiosk application
 
 publish_to: 'none'
 
@@ -12,7 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^1.1.0
-  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
